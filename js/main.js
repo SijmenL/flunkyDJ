@@ -56,8 +56,10 @@ function fadeOut(selectedSong, speed) {
     let fadeTimer = 0;
     fadeOutAudio = setInterval(function () {
         fadeTimer++;
-        console.log(`%cfade out: ${speed}, ${fadeTimer}, ${Math.ceil(selectedSong.volume * 10)}`, "color:cornflowerblue")
-        if (selectedSong !== musicPlaying && fadeTimer > speed) {
+        console.log(`%cfade out: ${speed}, ${fadeTimer}, ${Math.round(selectedSong.volume * 10)}`, "color:cornflowerblue")
+        if (selectedSong !== musicPlaying && fadeTimer > 11) {
+            console.error('fade out failed')
+            fadeOutDone()
             clearInterval(fadeOutAudio);
         }
 
@@ -66,7 +68,7 @@ function fadeOut(selectedSong, speed) {
         }
         if (selectedSong.volume <= 0.05) {
             clearInterval(fadeOutAudio);
-            console.log('%cfade out done', "color:green");
+            console.info('%cfade out done', "color:green");
             fadeOutDone();
         }
     }, speed);
@@ -77,18 +79,19 @@ function fadeIn(selectedSong, speed) {
     let fadeTimer = 0;
     fadeInAudio = setInterval(function () {
         fadeTimer++;
-        console.log(`%cfade in: ${speed}, ${fadeTimer}, ${Math.ceil(selectedSong.volume * 10)}`, "color:cornflowerblue")
-        if (selectedSong !== musicPlaying && fadeTimer > speed) {
+        console.log(`%cfade in: ${speed}, ${fadeTimer}, ${Math.round(selectedSong.volume * 10)}`, "color:cornflowerblue")
+        if (selectedSong !== musicPlaying && fadeTimer > 11) {
+            console.error('fade in failed')
+            fadeInDone(selectedSong)
             clearInterval(fadeInAudio);
         }
-
 
         if (selectedSong.volume < 0.9) {
             selectedSong.volume += 0.1;
         }
         if (selectedSong.volume >= 0.95) {
             clearInterval(fadeInAudio);
-            console.log('%cfade in done', "color:green");
+            console.info('%cfade in done', "color:green");
             fadeInDone(selectedSong);
         }
     }, speed);
@@ -116,13 +119,11 @@ function fadeOutDone() {
 }
 
 function fadeInDone(selectedSong) {
-    if (selectedSong === mainMusic) {
-        if (musicPlaying !== "main") {
-            mainMusic.play();
-            mainMusic.loop = true;
-            mainMusic.volume = 1;
-        }
+        selectedSong.play();
+        selectedSong.loop = true;
+        selectedSong.volume = 1;
 
+    if (selectedSong === mainMusic) {
         mainButton.classList.add("playing");
         drinkButton.classList.remove("playing");
         pausedButton.classList.remove("playing");
@@ -136,12 +137,6 @@ function fadeInDone(selectedSong) {
         console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
     }
     if (selectedSong === drinkMusic) {
-        if (musicPlaying !== "drink") {
-            drinkMusic.volume = 1;
-            drinkMusic.loop = true;
-            drinkMusic.play();
-
-        }
         mainButton.classList.remove("playing");
         drinkButton.classList.add("playing");
         pausedButton.classList.remove("playing");
@@ -156,10 +151,7 @@ function fadeInDone(selectedSong) {
         console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
     }
     if (selectedSong === finishedMusic) {
-        finishedMusic.volume = 1;
-        finishedMusic.loop = true;
         finishedMusic.currentTime = 0;
-        finishedMusic.play();
         fadeTo = "";
         mainMusic.pause();
         pausedMusic.pause();
