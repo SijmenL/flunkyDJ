@@ -32,7 +32,7 @@ function init() {
     drinkMusic = document.getElementById('drinking-music-audio');
     finishedMusic = document.getElementById('finished-music-audio');
     stopAudio = document.getElementById('stop-audio');
-    
+
     startButton = document.getElementById('start-button');
     mainButton = document.getElementById('main-button');
     drinkButton = document.getElementById('drink-button');
@@ -47,6 +47,15 @@ function init() {
     finishedButton.addEventListener('click', playFinishedMusic);
     stopButton.addEventListener('click', stopPlaying);
 
+    if (iosUser()) {
+        startMusic.load();
+        mainMusic.load();
+        pausedMusic.load();
+        drinkMusic.load();
+        finishedMusic.load();
+        stopAudio.load();
+    }
+
 }
 
 /**
@@ -58,11 +67,7 @@ function init() {
 function iosUser() {
     let userAgent = navigator.userAgent || navigator.vendor || window.opera;
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return true;
-    }
-
-    return false;
+    return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 }
 
 function fadeOut(selectedSong, speed) {
@@ -88,8 +93,8 @@ function fadeOut(selectedSong, speed) {
             }
         }, speed);
     } else {
-        console.error('ios detected, skipping fade')
-        fadeOutDone()
+        console.error('ios detected, skipping fade');
+        fadeOutDone();
     }
 }
 
@@ -115,11 +120,10 @@ function fadeIn(selectedSong, speed) {
                 fadeInDone(selectedSong);
             }
         }, speed);
+    } else {
+        console.error('ios detected, skipping fade');
+        fadeInDone(selectedSong);
     }
-    else {
-            console.error('ios detected, skipping fade')
-            fadeInDone(selectedSong)
-        }
 }
 
 
