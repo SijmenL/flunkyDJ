@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/main.js" defer type="text/javascript"></script>
+    <title>Flunky DJ</title>
+</head>
+<body id="body">
+
+<h1>Flunky DJ</h1>
+<p>Speel de Flunkybal muziek af met overgangen!</p>
+<p>Je geselecteerde muziek is blauw omlijnt, de muziek die aan het afspelen is rood.</p>
+<p><strong> Als je de website voor het eerst opent kan het zijn dat de muziek niet gelijk afspeelt, dan moet deze nog
+    even inladen.</strong></p>
+
+<div class="buttons">
+
+    <a class="start-button" id="start-button" onclick="playStartMusic()">
+        <p class="button-text-main">Start het spel!</p>
+        <p class="button-text">Funky Town Instrumental</p>
+    </a>
+    <audio id="start-music-audio" src="audio/FunkyTownInstrumental.mp3"></audio>
+
+    <a class="after-start main-button" id="main-button" onclick="playMainMusic()">
+        <p class="button-text-main">Muziek!</p>
+        <p class="button-text">Funky Town</p>
+    </a>
+    <audio id="main-music-audio" src="audio/Funkytown.mp3"></audio>
+
+    <a class="after-start drink-button" id="drink-button" onclick="playDrinkMusic()">
+        <p class="button-text-main">Drinken!</p>
+        <p class="button-text">Bla Bla Bla</p>
+    </a>
+
+    <audio id="drinking-music-audio" src="audio/BlaBlaBla.mp3"></audio>
+
+    <a class="after-start paused-button" id="paused-button" onclick="playPausedMusic()">
+        <p class="button-text-main">Spel stil leggen!</p>
+        <p class="button-text">Up & Down</p>
+    </a>
+    <audio id="paused-music-audio" src="audio/Up&Down.mp3"></audio>
+
+    <a class="after-start finish-button" id="finished-button" onclick="playFinishedMusic()">
+        <p class="button-text-main">Winnaar bekend!</p>
+        <p class="button-text">Gypsy Woman</p>
+
+    </a>
+    <audio id="finished-music-audio" src="audio/GypsyWoman.mp3"></audio>
+
+    <a class="after-start stop-button" onclick="stopPlaying()">
+        <p class="button-text-main">Stop de muziek!</p>
+    </a>
+    <audio id="stop-audio" src="audio/stop.mp3"></audio>
+
+</div>
+</body>
+</html>
