@@ -40,22 +40,19 @@ function init() {
     finishedButton = document.getElementById('finished-button');
     stopButton = document.getElementById('stop-button');
 
-    startButton.addEventListener('click', playStartMusic)
-        mainButton.addEventListener('click', playMainMusic)
-    drinkButton.addEventListener('click', playDrinkMusic)
-        pausedButton.addEventListener('click', playPausedMusic)
-            finishedButton.addEventListener('click', playFinishedMusic)
-    stopButton.addEventListener('click', stopPlaying)
+    startButton.addEventListener('click', playStartMusic);
+    mainButton.addEventListener('click', playMainMusic);
+    drinkButton.addEventListener('click', playDrinkMusic);
+    pausedButton.addEventListener('click', playPausedMusic);
+    finishedButton.addEventListener('click', playFinishedMusic);
+    stopButton.addEventListener('click', stopPlaying);
 
     startMusic.load();
     mainMusic.load();
-    pausedMusic.load();
-    drinkMusic.load();
-    finishedMusic.load();
-    stopAudio.load();
 }
 
 function fadeOut(selectedSong, speed) {
+    console.log(`%cfade out of ${selectedSong.id} initiated`, "color:blue")
     let fadeTimer = 0;
     fadeOutAudio = setInterval(function () {
         fadeTimer++;
@@ -68,13 +65,14 @@ function fadeOut(selectedSong, speed) {
         }
         if (selectedSong.volume <= 0.05) {
             clearInterval(fadeOutAudio);
-            console.log('done');
+            console.log('%cfade out done', "color:green");
             fadeOutDone();
         }
     }, speed);
 }
 
 function fadeIn(selectedSong, speed) {
+    console.log(`%cfade in of ${selectedSong.id} initiated`, "color:blue")
     let fadeTimer = 0;
     fadeInAudio = setInterval(function () {
         fadeTimer++;
@@ -88,6 +86,7 @@ function fadeIn(selectedSong, speed) {
         }
         if (selectedSong.volume >= 0.95) {
             clearInterval(fadeInAudio);
+            console.log('%cfade in done', "color:green");
             fadeInDone(selectedSong);
         }
     }, speed);
@@ -132,7 +131,7 @@ function fadeInDone(selectedSong) {
         finishedMusic.pause();
 
         musicPlaying = 'main';
-        console.log(musicPlaying);
+        console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
     }
     if (selectedSong === drinkMusic) {
         if (musicPlaying !== "drink") {
@@ -152,7 +151,7 @@ function fadeInDone(selectedSong) {
 
 
         musicPlaying = 'drink';
-        console.log(musicPlaying);
+        console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
     }
     if (selectedSong === finishedMusic) {
         finishedMusic.volume = 1;
@@ -171,7 +170,7 @@ function fadeInDone(selectedSong) {
 
 
         musicPlaying = 'finished';
-        console.log(musicPlaying);
+        console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
     }
 }
 
@@ -198,13 +197,12 @@ function playStartMusic() {
     }
 
     musicPlaying = 'start';
-    console.log(musicPlaying);
+    console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
 
 }
 
 
 function playMainMusic() {
-    console.log(musicPlaying);
     clearInterval(fadeOutAudio);
     clearInterval(fadeInAudio);
 
@@ -233,6 +231,7 @@ function playMainMusic() {
     }
 
     musicPlaying = "main";
+    console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
 }
 
 
@@ -268,7 +267,7 @@ function playPausedMusic() {
     }
 
     musicPlaying = 'paused';
-    console.log(musicPlaying);
+    console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
 
 }
 
@@ -336,6 +335,8 @@ function playFinishedMusic() {
 
 function stopPlaying() {
     if (musicPlaying !== "") {
+        console.log(`%call music muted & reset`, "color:yellow");
+
         clearInterval(fadeOutAudio);
         clearInterval(fadeInAudio);
 
