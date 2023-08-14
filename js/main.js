@@ -56,6 +56,7 @@ function fadeOut(selectedSong, speed) {
     let fadeTimer = 0;
     fadeOutAudio = setInterval(function () {
         fadeTimer++;
+        console.log(`%cfade out: ${speed}, ${fadeTimer}, ${Math.ceil(selectedSong.volume * 10)}`, "color:cornflowerblue")
         if (selectedSong !== musicPlaying && fadeTimer > speed) {
             clearInterval(fadeOutAudio);
         }
@@ -76,6 +77,7 @@ function fadeIn(selectedSong, speed) {
     let fadeTimer = 0;
     fadeInAudio = setInterval(function () {
         fadeTimer++;
+        console.log(`%cfade in: ${speed}, ${fadeTimer}, ${Math.ceil(selectedSong.volume * 10)}`, "color:cornflowerblue")
         if (selectedSong !== musicPlaying && fadeTimer > speed) {
             clearInterval(fadeInAudio);
         }
