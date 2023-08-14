@@ -21,10 +21,14 @@ let pausedButton;
 let finishedButton;
 let stopButton;
 
+let iosWarning;
+
 function init() {
     console.log('page loaded');
 
     body = document.getElementById('body');
+
+    iosWarning = document.getElementById('ios-warning')
 
     startMusic = document.getElementById('start-music-audio');
     mainMusic = document.getElementById('main-music-audio');
@@ -48,6 +52,7 @@ function init() {
     stopButton.addEventListener('click', stopPlaying);
 
     if (iosUser()) {
+        iosWarning.style.display = 'block';
         startMusic.load();
         mainMusic.load();
         pausedMusic.load();

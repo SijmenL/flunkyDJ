@@ -8,6 +8,10 @@ html {
     display: none;
 }
 
+.warning {
+    color: red;
+    font-weight: bold;
+}
 
 body {
     background-color: #b4cfff;
