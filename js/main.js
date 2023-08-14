@@ -32,7 +32,7 @@ function init() {
     drinkMusic = document.getElementById('drinking-music-audio');
     finishedMusic = document.getElementById('finished-music-audio');
     stopAudio = document.getElementById('stop-audio');
-
+    
     startButton = document.getElementById('start-button');
     mainButton = document.getElementById('main-button');
     drinkButton = document.getElementById('drink-button');
@@ -47,54 +47,79 @@ function init() {
     finishedButton.addEventListener('click', playFinishedMusic);
     stopButton.addEventListener('click', stopPlaying);
 
-    startMusic.load();
-    mainMusic.load();
+}
+
+/**
+ * Determine the mobile operating system.
+ * This function returns one of 'iOS', 'Android', 'Windows Phone', or 'unknown'.
+ *
+ * @returns {boolean}
+ */
+function iosUser() {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return true;
+    }
+
+    return false;
 }
 
 function fadeOut(selectedSong, speed) {
-    console.log(`%cfade out of ${selectedSong.id} initiated`, "color:blue")
+    console.log(`%cfade out of ${selectedSong.id} initiated`, "color:blue");
     let fadeTimer = 0;
-    fadeOutAudio = setInterval(function () {
-        fadeTimer++;
-        console.log(`%cfade out: ${speed}, ${fadeTimer}, ${Math.round(selectedSong.volume * 10)}`, "color:cornflowerblue")
-        if (selectedSong !== musicPlaying && fadeTimer > 11) {
-            console.error('fade out failed')
-            fadeOutDone()
-            clearInterval(fadeOutAudio);
-        }
+    if (!iosUser()) {
+        fadeOutAudio = setInterval(function () {
+            fadeTimer++;
+            console.log(`%cfade out: ${speed}, ${fadeTimer}, ${Math.round(selectedSong.volume * 10)}`, "color:cornflowerblue");
+            if (selectedSong !== musicPlaying && fadeTimer > 11) {
+                console.error('fade out failed');
+                fadeOutDone();
+                clearInterval(fadeOutAudio);
+            }
 
-        if (selectedSong.volume > 0.1) {
-            selectedSong.volume -= 0.1;
-        }
-        if (selectedSong.volume <= 0.05) {
-            clearInterval(fadeOutAudio);
-            console.info('%cfade out done', "color:green");
-            fadeOutDone();
-        }
-    }, speed);
+            if (selectedSong.volume > 0.1) {
+                selectedSong.volume -= 0.1;
+            }
+            if (selectedSong.volume <= 0.05) {
+                clearInterval(fadeOutAudio);
+                console.info('%cfade out done', "color:green");
+                fadeOutDone();
+            }
+        }, speed);
+    } else {
+        console.error('ios detected, skipping fade')
+        fadeOutDone()
+    }
 }
 
 function fadeIn(selectedSong, speed) {
-    console.log(`%cfade in of ${selectedSong.id} initiated`, "color:blue")
+    console.log(`%cfade in of ${selectedSong.id} initiated`, "color:blue");
     let fadeTimer = 0;
-    fadeInAudio = setInterval(function () {
-        fadeTimer++;
-        console.log(`%cfade in: ${speed}, ${fadeTimer}, ${Math.round(selectedSong.volume * 10)}`, "color:cornflowerblue")
-        if (selectedSong !== musicPlaying && fadeTimer > 11) {
-            console.error('fade in failed')
-            fadeInDone(selectedSong)
-            clearInterval(fadeInAudio);
-        }
+    if (!iosUser()) {
+        fadeInAudio = setInterval(function () {
+            fadeTimer++;
+            console.log(`%cfade in: ${speed}, ${fadeTimer}, ${Math.round(selectedSong.volume * 10)}`, "color:cornflowerblue");
+            if (selectedSong !== musicPlaying && fadeTimer > 11) {
+                console.error('fade in failed');
+                fadeInDone(selectedSong);
+                clearInterval(fadeInAudio);
+            }
 
-        if (selectedSong.volume < 0.9) {
-            selectedSong.volume += 0.1;
+            if (selectedSong.volume < 0.9) {
+                selectedSong.volume += 0.1;
+            }
+            if (selectedSong.volume >= 0.95) {
+                clearInterval(fadeInAudio);
+                console.info('%cfade in done', "color:green");
+                fadeInDone(selectedSong);
+            }
+        }, speed);
+    }
+    else {
+            console.error('ios detected, skipping fade')
+            fadeInDone(selectedSong)
         }
-        if (selectedSong.volume >= 0.95) {
-            clearInterval(fadeInAudio);
-            console.info('%cfade in done', "color:green");
-            fadeInDone(selectedSong);
-        }
-    }, speed);
 }
 
 
@@ -119,9 +144,9 @@ function fadeOutDone() {
 }
 
 function fadeInDone(selectedSong) {
-        selectedSong.play();
-        selectedSong.loop = true;
-        selectedSong.volume = 1;
+    selectedSong.play();
+    selectedSong.loop = true;
+    selectedSong.volume = 1;
 
     if (selectedSong === mainMusic) {
         mainButton.classList.add("playing");
@@ -239,26 +264,24 @@ function playPausedMusic() {
     finishedButton.classList.remove("selected");
 
 
-    if (musicPlaying !== "paused") {
-        pausedMusic.volume = 1;
-        pausedMusic.currentTime = 0;
-        pausedMusic.play();
-        pausedMusic.loop = true;
+    pausedMusic.volume = 1;
+    pausedMusic.currentTime = 0;
+    pausedMusic.play();
+    pausedMusic.loop = true;
 
-        mainButton.classList.remove("playing");
-        drinkButton.classList.remove("playing");
-        pausedButton.classList.add("playing");
-        finishedButton.classList.remove("playing");
+    mainButton.classList.remove("playing");
+    drinkButton.classList.remove("playing");
+    pausedButton.classList.add("playing");
+    finishedButton.classList.remove("playing");
 
 
-        mainMusic.pause();
-        drinkMusic.pause();
-        startMusic.pause();
-        finishedMusic.pause();
+    mainMusic.pause();
+    drinkMusic.pause();
+    startMusic.pause();
+    finishedMusic.pause();
 
-        clearInterval(fadeOutAudio);
-        clearInterval(fadeInAudio);
-    }
+    clearInterval(fadeOutAudio);
+    clearInterval(fadeInAudio);
 
     musicPlaying = 'paused';
     console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
