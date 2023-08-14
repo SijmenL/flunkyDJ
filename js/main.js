@@ -12,17 +12,14 @@ let fadeOutAudio;
 let fadeInAudio;
 let finishedMusic;
 let fadeTo;
-let startButton;
 let body;
 
+let startButton;
 let mainButton;
 let drinkButton;
 let pausedButton;
 let finishedButton;
-
-let volume
-let volumeSlider;
-let volumeDisplay;
+let stopButton;
 
 function init() {
     console.log('page loaded');
@@ -36,32 +33,39 @@ function init() {
     finishedMusic = document.getElementById('finished-music-audio');
     stopAudio = document.getElementById('stop-audio');
 
+    startButton = document.getElementById('start-button');
     mainButton = document.getElementById('main-button');
     drinkButton = document.getElementById('drink-button');
     pausedButton = document.getElementById('paused-button');
     finishedButton = document.getElementById('finished-button');
+    stopButton = document.getElementById('stop-button');
 
-    startButton = document.getElementById('start-button');
+    startButton.addEventListener('click', playStartMusic)
+        mainButton.addEventListener('click', playMainMusic)
+    drinkButton.addEventListener('click', playDrinkMusic)
+        pausedButton.addEventListener('click', playPausedMusic)
+            finishedButton.addEventListener('click', playFinishedMusic)
+    stopButton.addEventListener('click', stopPlaying)
 
-    volumeSlider = document.getElementById('volume');
-    volumeDisplay = document.getElementById('volume-display');
-
-    volumeSlider.addEventListener('input', slider)
+    startMusic.load();
+    mainMusic.load();
+    pausedMusic.load();
+    drinkMusic.load();
+    finishedMusic.load();
+    stopAudio.load();
 }
 
 function fadeOut(selectedSong, speed) {
     let fadeTimer = 0;
-    const fadeOutAudio = setInterval(function () {
+    fadeOutAudio = setInterval(function () {
         fadeTimer++;
         if (selectedSong !== musicPlaying && fadeTimer > speed) {
             clearInterval(fadeOutAudio);
-            return;
         }
 
         if (selectedSong.volume > 0.1) {
             selectedSong.volume -= 0.1;
         }
-
         if (selectedSong.volume <= 0.05) {
             clearInterval(fadeOutAudio);
             console.log('done');
@@ -72,23 +76,23 @@ function fadeOut(selectedSong, speed) {
 
 function fadeIn(selectedSong, speed) {
     let fadeTimer = 0;
-    const fadeInAudio = setInterval(function () {
+    fadeInAudio = setInterval(function () {
         fadeTimer++;
         if (selectedSong !== musicPlaying && fadeTimer > speed) {
             clearInterval(fadeInAudio);
-            return;
         }
+
 
         if (selectedSong.volume < 0.9) {
             selectedSong.volume += 0.1;
         }
-
         if (selectedSong.volume >= 0.95) {
             clearInterval(fadeInAudio);
             fadeInDone(selectedSong);
         }
     }, speed);
 }
+
 
 function fadeOutDone() {
     if (fadeTo === "main") {
