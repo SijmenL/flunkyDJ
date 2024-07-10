@@ -14,7 +14,7 @@ html {
 }
 
 body {
-    background-color: #b4cfff;
+    background-color: #cee3f6;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 50px;
@@ -22,42 +22,52 @@ body {
 }
 
 h1 {
+    color: #1c244b;
     margin-bottom: 10px;
+    font-weight: 600;
+    line-height: 1.2em;
+    font-size: calc(1.35rem + 1.2vw);
 }
 
 p {
     margin: 0px;
 }
 
+* {
+    font-family: "Poppins", sans-serif;
+}
+
 h1, p {
     text-align: center;
-    font-family: "Gill Sans MT", sans-serif;
 }
 
-.buttons {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 400px;
-    margin-bottom: 150px;
-}
 
-a {
+
+
+
+.clickable-button {
     margin: 10px;
     padding: 20px;
     border-radius: 5px;
-    width: 75vw;
+    width: 100%;
     max-width: 500px;
-    height: 75px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     background-color: white;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    font-family: "Gill Sans MT", sans-serif;
     color: white;
     cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    user-select: none;
+    transition: 0.1s;
+}
+
+.is-stopping {
+    background-image: linear-gradient(to bottom, #8a1a1a, #8a1a1a) !important;
 }
 
 .button-text-main {
@@ -68,26 +78,17 @@ a {
 
 .button-text {
     margin: 0;
+    line-break: strict;
 }
 
-.start-button {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.9)), url("../img/funky town.webp");
-}
-
-.main-button {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.9)), url("../img/funky town.jpeg");
-}
-
-.drink-button {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.9)), url("../img/bla bla bla.jpeg");
-}
-
-.paused-button {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.9)), url("../img/up & down.jpeg");
-}
-
-.finish-button {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.9)), url("../img/gypsy woman.jpg");
+.buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 10px;;
 }
 
 .stop-button {
@@ -96,19 +97,61 @@ a {
 
 
 .selected {
-    border-color: blue;
+    border-color: #1c244b;
     border-width: 5px;
     border-style: solid;
 }
 
 .playing {
+    outline: #0092df 5px solid;
+}
+
+.loading {
+    width: 50px;
+    height: 50px;
+    border: 5px solid black;
+    border-bottom: 5px solid #cee3f6;
+    border-radius: 50%;
+    animation: ease-in-out loadingAnimation 1s infinite;
+}
+
+.playing-no-remember {
+    outline: white 5px solid;
+}
+
+.sound-effect {
     outline: red 5px solid;
 }
 
-@media (min-width: 650px) {
-    a {
-        width: 200px;
-        height: 200px;
+@keyframes loadingAnimation {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .clickable-button {
+        width: 250px;
+        height: 250px;
+        justify-content: center;
+    }
+
+    .buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        padding: 20px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    .clickable-button {
+        width: 250px;
+        height: 250px;
         justify-content: center;
     }
 

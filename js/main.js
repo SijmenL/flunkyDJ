@@ -169,6 +169,7 @@ function fadeInDone(selectedSong) {
 
         musicPlaying = 'main';
         console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
+        selectedSong.play();
     }
     if (selectedSong === drinkMusic) {
         mainButton.classList.remove("playing");
@@ -183,6 +184,7 @@ function fadeInDone(selectedSong) {
 
         musicPlaying = 'drink';
         console.log(`%cnow playing: ${musicPlaying}`, "color:yellow");
+        selectedSong.play();
     }
     if (selectedSong === finishedMusic) {
         finishedMusic.currentTime = 0;
